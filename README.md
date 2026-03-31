@@ -1,3 +1,13 @@
+---
+title: Auto Quote Maker
+emoji: 🏠
+colorFrom: blue
+colorTo: gray
+sdk: docker
+app_port: 8000
+pinned: false
+---
+
 # Auto Quote Maker — Aerial Image Dataset Builder
 
 A two-script pipeline that discovers residential addresses in a neighborhood and downloads satellite images of each property at a consistent resolution and zoom level. Images are intended for manual annotation in **CVAT** to classify features like driveways, patios, and walkways.

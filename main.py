@@ -14,10 +14,14 @@ Run locally:
     uvicorn main:app --reload --port 8000
 """
 
+import os
+import shutil
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 import numpy as np
 from fastapi import FastAPI, HTTPException
+from huggingface_hub import hf_hub_download
 from pydantic import BaseModel
 
 from quote import (
@@ -38,9 +42,29 @@ _model = None
 _device = None
 
 
+HF_REPO_ID  = "Plastuchino/auto-quote-maker"
+CKPT_LOCAL  = Path("checkpoints/stage2_binary_best.pth")
+
+
+def ensure_checkpoint():
+    """Download checkpoint from HF Hub if not already on disk."""
+    if CKPT_LOCAL.exists():
+        return
+    print("Downloading model checkpoint from Hugging Face Hub...")
+    hf_token = os.environ.get("HF_TOKEN")
+    path = hf_hub_download(
+        repo_id=HF_REPO_ID,
+        filename=CKPT_LOCAL.name,
+        token=hf_token,
+    )
+    shutil.copy(path, CKPT_LOCAL)
+    print("Checkpoint ready.")
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global _model, _device
+    ensure_checkpoint()
     print("Loading model...")
     _model, _device = load_model()
     print("Model ready.")

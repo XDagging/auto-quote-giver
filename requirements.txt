@@ -11,3 +11,4 @@ numpy==2.4.4
 fastapi==0.115.12
 uvicorn[standard]==0.34.2
 pydantic==2.12.5
+huggingface_hub==1.8.0

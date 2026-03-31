@@ -34,21 +34,9 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 COPY quote.py .
 COPY main.py .
 
-# Download the model checkpoint from Hugging Face at build time.
-# HF_TOKEN must be passed as a build argument:
-#   docker build --build-arg HF_TOKEN=hf_... .
-# On Render, set it under Settings → Environment as a build-time secret.
-ARG HF_TOKEN
-RUN mkdir -p checkpoints && \
-    python -c "\
-from huggingface_hub import hf_hub_download; \
-import shutil; \
-path = hf_hub_download( \
-    repo_id='Plastuchino/auto-quote-maker', \
-    filename='stage2_binary_best.pth', \
-    token='${HF_TOKEN}', \
-); \
-shutil.copy(path, 'checkpoints/stage2_binary_best.pth')"
+# Checkpoint is downloaded at runtime startup by main.py.
+# Set HF_TOKEN as a Space secret in the HuggingFace dashboard.
+RUN mkdir -p checkpoints
 
 EXPOSE 8000
 
