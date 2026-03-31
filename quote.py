@@ -154,7 +154,7 @@ def load_model(ckpt_path: str = STAGE2_CKPT) -> torch.nn.Module:
     )
     ckpt = torch.load(ckpt_path, map_location=device)
     model.load_state_dict(ckpt["model_state_dict"])
-    model.to(device).eval()
+    model.to(device).half().eval()   # float16 — halves RAM usage on CPU
     return model, device
 
 
@@ -165,7 +165,7 @@ def preprocess_image(img: Image.Image) -> torch.Tensor:
     mean = np.array([0.485, 0.456, 0.406])
     std  = np.array([0.229, 0.224, 0.225])
     arr  = (arr - mean) / std
-    tensor = torch.from_numpy(arr).permute(2, 0, 1).unsqueeze(0).float()
+    tensor = torch.from_numpy(arr).permute(2, 0, 1).unsqueeze(0).half()
     return tensor
 
 
