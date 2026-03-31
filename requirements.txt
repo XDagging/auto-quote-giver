@@ -1,0 +1,13 @@
+# CPU-only PyTorch — keeps the Docker image ~1GB smaller than the CUDA build.
+# The model runs fine on CPU for single-image inference (~1-2 sec/request).
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.5.1+cpu
+torchvision==0.20.1+cpu
+
+segmentation-models-pytorch==0.5.0
+scipy==1.17.1
+Pillow==12.1.1
+numpy==2.4.4
+fastapi==0.115.12
+uvicorn[standard]==0.34.2
+pydantic==2.12.5

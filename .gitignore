@@ -1,0 +1,8 @@
+.env
+addresses.csv
+/data
+/.claude
+/.venv
+/__pycache__
+/checkpoints
+upload_checkpoint.py
